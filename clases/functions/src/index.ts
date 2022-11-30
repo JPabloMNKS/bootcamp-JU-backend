@@ -22,7 +22,6 @@
 // log('page loaded');
 // log('User signed in ', '1232132');
 
-
 // function sum(numbers: number[]): number {
 //     return numbers.reduce((total, n) => total + n, 0);
 // }
@@ -38,14 +37,11 @@
 
 //sumVariadic(1,2,3);
 
-
 // function sumVariadicSafe(...numbers: number[]): number{
 //     return numbers.reduce((total, n) => total + n, 0);
 // }
 
 // console.log(sumVariadicSafe(1,2,3,4),1,2,56,3);
-
-
 
 // function add(a: number, b: number): number{
 //     return a + b;
@@ -61,7 +57,6 @@
 // console.log(add.call(null, 10, 20), ' call');
 // console.log(add.bind(null, 10,20)(), ' bind');
 
-
 // let x = {
 //     a(){
 //         return this;
@@ -75,36 +70,104 @@
 
 // console.log(a());
 
+// function* fibonacciGenerator() : IterableIterator<number>{
+//     let a : number = 0;
+//     let b : number = 1;
+//     let c : number = 0;
 
+//     while(true){
+//         // FORMA 2
+//         yield a;
+//         [a,b] = [b,a+b];
 
-function* fibonacciGenerator() : IterableIterator<number>{
-    let a : number = 0;
-    let b : number = 1;
-    let c : number = 0;
+//         // FORMA 1
+//         // yield c;
+//         // a = b;
+//         // b = c;
+//         // c = a + b;
 
-    while(true){
-        // FORMA 2
-        yield a;
-        [a,b] = [b,a+b];
+//     }
+// }
 
-        // FORMA 1
-        // yield c;
-        // a = b;
-        // b = c;
-        // c = a + b;
+// const resultado = fibonacciGenerator();
 
+// console.log(resultado.next().value);
+// console.log(resultado.next().value);
+// console.log(resultado.next().value);
+// console.log(resultado.next().value);
+// console.log(resultado.next().value);
+// console.log(resultado.next().value);
+// console.log(resultado.next().value);
+// console.log(resultado.next().value);
+// console.log(resultado.next().value);
+
+// let number = {
+//     *[Symbol.iterator](){
+//         for (let n = 0; n < 10; n++) {
+//             yield n;
+//         }
+//     }
+// };
+
+// for(let a of number){
+
+// }
+
+// let allNumbers = [...number];
+
+// let [one, two, ...rest] = number;
+
+// CALL SIGNATURE
+// function sum(a: number, b: number): number {
+//   return a + b;
+// }
+
+// let test = sum;
+
+// type Log = (message: string, userId?: string) => void;
+
+// type Log2 = {
+//     (message: string, userId?: string): void;
+// }
+
+class Reservation {
+    public toOrDestination!: Date | string;
+    public destination!: string;
+
+    constructor(private from: Date) { }
+
+    setToOrDestination(date: Date | string) {
+        this.toOrDestination = date;
+    }
+
+    setDestination(destination: string) {
+        this.destination = destination;
     }
 }
 
+type Reserve = {
+    (from: Date, to: Date, destination: string): Reservation;
+    (from: Date, destination: string): Reservation;
+};
 
-const resultado = fibonacciGenerator();
+let reserve: Reserve = (
+    from: Date,
+    toOrDestination: Date | string,
+    destination?: string
+): Reservation => {
+    const reservation = new Reservation(from);
 
-console.log(resultado.next().value);
-console.log(resultado.next().value);
-console.log(resultado.next().value);
-console.log(resultado.next().value);
-console.log(resultado.next().value);
-console.log(resultado.next().value);
-console.log(resultado.next().value);
-console.log(resultado.next().value);
-console.log(resultado.next().value);
+    if(toOrDestination instanceof Date && destination){
+        reservation.setToOrDestination(toOrDestination);
+        reservation.setDestination(destination);
+    }else if(toOrDestination){
+        reservation.setToOrDestination(toOrDestination);
+    }
+        return reservation;
+};
+
+const myReservation = reserve(new Date(), new Date(), 'Beni');
+const myReservation2 = reserve(new Date(), 'Pando');
+
+console.log(myReservation);
+console.log(myReservation2);
