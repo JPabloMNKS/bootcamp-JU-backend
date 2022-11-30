@@ -80,3 +80,4 @@ logPokemon();
 //   pokemonName.call(pokemon, 'sushi', 'algorithms'); 
 //   pokemonName.apply(pokemon, ['sushi', 'algorithms']); 
   
+
