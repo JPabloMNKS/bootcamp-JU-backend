@@ -130,44 +130,65 @@
 //     (message: string, userId?: string): void;
 // }
 
-class Reservation {
-    public toOrDestination!: Date | string;
-    public destination!: string;
+// class Reservation {
+//     public toOrDestination!: Date | string;
+//     public destination!: string;
 
-    constructor(private from: Date) { }
+//     constructor(private from: Date) { }
 
-    setToOrDestination(date: Date | string) {
-        this.toOrDestination = date;
-    }
+//     setToOrDestination(date: Date | string) {
+//         this.toOrDestination = date;
+//     }
 
-    setDestination(destination: string) {
-        this.destination = destination;
-    }
-}
+//     setDestination(destination: string) {
+//         this.destination = destination;
+//     }
+// }
 
-type Reserve = {
-    (from: Date, to: Date, destination: string): Reservation;
-    (from: Date, destination: string): Reservation;
-};
+// type Reserve = {
+//     (from: Date, to: Date, destination: string): Reservation;
+//     (from: Date, destination: string): Reservation;
+// };
 
-let reserve: Reserve = (
-    from: Date,
-    toOrDestination: Date | string,
-    destination?: string
-): Reservation => {
-    const reservation = new Reservation(from);
+// let reserve: Reserve = (
+//     from: Date,
+//     toOrDestination: Date | string,
+//     destination?: string
+// ): Reservation => {
+//     const reservation = new Reservation(from);
 
-    if(toOrDestination instanceof Date && destination){
-        reservation.setToOrDestination(toOrDestination);
-        reservation.setDestination(destination);
-    }else if(toOrDestination){
-        reservation.setToOrDestination(toOrDestination);
-    }
-        return reservation;
-};
+//     if(toOrDestination instanceof Date && destination){
+//         reservation.setToOrDestination(toOrDestination);
+//         reservation.setDestination(destination);
+//     }else if(toOrDestination){
+//         reservation.setToOrDestination(toOrDestination);
+//     }
+//         return reservation;
+// };
 
-const myReservation = reserve(new Date(), new Date(), 'Beni');
-const myReservation2 = reserve(new Date(), 'Pando');
+// const myReservation = reserve(new Date(), new Date(), 'Beni');
+// const myReservation2 = reserve(new Date(), 'Pando');
 
-console.log(myReservation);
-console.log(myReservation2);
+// console.log(myReservation);
+// console.log(myReservation2);
+
+
+
+// type A = number;
+// type B = A | string;
+
+
+// interface A {
+//     good(x:number): string;
+//     bad(x:number): string;
+// }
+
+// //no se puede
+// interface B extends A{
+//     good(x:string): string;
+//     bad(x:string): string;
+
+// }
+
+
+
