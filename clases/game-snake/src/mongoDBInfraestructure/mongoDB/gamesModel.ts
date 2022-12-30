@@ -1,8 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn, BaseEntity } from 'typeorm';
+import { Entity, Column, ObjectIdColumn } from 'typeorm';
 
 @Entity()
-export class GamesModel extends BaseEntity {
-    @PrimaryGeneratedColumn('uuid')
+export class GamesModel {
+    @ObjectIdColumn()
     id!: string;
 
     @Column({default: 0})

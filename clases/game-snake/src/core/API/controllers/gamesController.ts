@@ -4,7 +4,7 @@ import { myContainer } from '../../inversify.config';
 import { TYPES, Position } from '../../types';
 import { IGamesService } from '../../services/interface/IGamesService';
 import Games from '../../entitys/games';
-import { GamesModel } from '../../../infraestructure/DB/gamesModel';
+import { GamesModel } from '../../../mongoDBInfraestructure/mongoDB/gamesModel';
 
 dotenv.config();
 
@@ -139,17 +139,19 @@ export default class GamesController {
         JSON.parse(game.foodPosition),
         snakeBody
       );
+      let newGame: Games = {
+        score: game.score,
+        snake: JSON.stringify(movement),
+        board: JSON.stringify(newBoard),
+        gameStatus: gameStatus,
+        foodPosition: JSON.stringify(foodPosition),
+        snakeBody: JSON.stringify(snakeBody),
+        boardSize: 0
+      };
 
-      await GamesModel.update(
-        { id: id.toString() },
-        {
-          score: game.score,
-          snake: JSON.stringify(movement),
-          board: JSON.stringify(newBoard),
-          gameStatus: gameStatus,
-          foodPosition: JSON.stringify(foodPosition),
-          snakeBody: JSON.stringify(snakeBody),
-        }
+      await this.gameService.update(
+         id.toString(),
+         newGame
       );
 
       return response.status(200).json(newBoard);

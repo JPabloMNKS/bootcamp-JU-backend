@@ -6,7 +6,7 @@ import { Container } from 'inversify';
 // import { IUserService } from './services/interface/IUserService';
 // import { UserService } from './services/base/userService';
 
-import GamesRepository from '../infraestructure/repository/gamesRepository';
+import GamesRepository from '../mongoDBInfraestructure/repository/gamesRepository';
 import {GamesService} from './services/base/gamesService';
 import { IGamesRepository } from './repository/IGamesRepository';
 import { IGamesService } from './services/interface/IGamesService';

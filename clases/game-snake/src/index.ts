@@ -3,8 +3,8 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import userRoutes from './core/API/routes';
+import { AppDataSource } from './mongoDBInfraestructure/mongoDB/dataSource';
 
-import { AppDataSource } from './infraestructure/DB/dataSource';
 
 dotenv.config();
 const app = express();
@@ -18,7 +18,6 @@ app.use(
 );
 app.use(cors());
 app.use(userRoutes);
-
 AppDataSource.initialize();
 
 
