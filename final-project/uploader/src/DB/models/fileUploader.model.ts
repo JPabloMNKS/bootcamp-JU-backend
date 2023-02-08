@@ -1,21 +1,19 @@
-import { FileUploader as FileUploaderEntity } from "../entity/fileUploader"
+import { Entity, ObjectIdColumn, ObjectID, Column } from 'typeorm';
 
-export class FileUploader {
-    constructor(private fileUploaderEntity: FileUploaderEntity) {}
+@Entity()
+export default class FileUploaderModel {
+  @ObjectIdColumn()
+  id!: string;
 
-    getName() {
-        return this.fileUploaderEntity.name;
-    }
+  @Column()
+  name!: string;
 
-    getSize() {
-        return this.fileUploaderEntity.size;
-    }
+  @Column()
+  size!: string;
 
-    getDriveID() {
-        return this.fileUploaderEntity.driveID;
-    }
+  @Column()
+  driveID!: string;
 
-    getStatus() {
-        return this.fileUploaderEntity.status;
-    }
+  @Column()
+  status!: string;
 }

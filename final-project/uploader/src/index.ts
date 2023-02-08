@@ -1,29 +1,25 @@
 import express from 'express';
 import { AppDataSource } from './DB/data-source';
-import { DriveAccount } from './DB/entity/driveAccount';
+import dotenv from 'dotenv';
+import Routes from './core/API/routes';
+import bodyParser from 'body-parser';
+import cors from 'cors';
 
+
+dotenv.config();
 const app = express();
 const port = 3002;
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
-
-AppDataSource.initialize().then(async() => {
-  const accountOne = new DriveAccount();
-  accountOne.email = "test@gmail.com";
-  accountOne.googleDriveKey = "djshfkjasndlka=";
-
-  await AppDataSource.manager.save(accountOne);
-
-  const driveAccountOne = await AppDataSource.manager.find(DriveAccount)
-
-  app.get('/account', (req, res) => {
-    res.send(driveAccountOne)
+app.use(bodyParser.json());
+app.use(
+  bodyParser.urlencoded({
+    extended: false,
   })
-  
+);
+app.use(cors());
 
-}).catch(error => console.log(error));
+app.use(Routes);
+AppDataSource.initialize();
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);

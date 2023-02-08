@@ -6,7 +6,7 @@ async function sendMessage() {
   const queue = 'stats';
 
   await channel.assertQueue(queue, {
-    durable: false
+    durable: false,
   });
 
   channel.sendToQueue(queue, Buffer.from('Message to Stats!'));
@@ -14,7 +14,7 @@ async function sendMessage() {
 
   setTimeout(() => {
     connection.close();
-    process.exit(0)
+    process.exit(0);
   }, 500);
 }
 

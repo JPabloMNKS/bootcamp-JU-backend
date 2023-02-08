@@ -6,16 +6,20 @@ async function receiveMessage() {
   const queue = 'updloader';
 
   await channel.assertQueue(queue, {
-    durable: false
+    durable: false,
   });
 
-  console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", queue);
+  console.log(' [*] Waiting for messages in %s. To exit press CTRL+C', queue);
 
-  channel.consume(queue, (message) => {
-    console.log(" [x] Received %s", message?.content.toString());
-  }, {
-    noAck: true
-  });
+  channel.consume(
+    queue,
+    (message) => {
+      console.log(' [x] Received %s', message?.content.toString());
+    },
+    {
+      noAck: true,
+    }
+  );
 }
 
 receiveMessage();
