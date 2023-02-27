@@ -1,7 +1,9 @@
 export default class FileUploader {
   id?: string;
-  name!: string;
-  size!: string;
-  driveID!: string;
-  status!: string;
+  filename: string;
+  originalName: string;
+  size: number;
+  mimetype: string;
+  status: string;
+  driveId?: string;
 }

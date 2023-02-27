@@ -5,11 +5,12 @@ import { IDriveAccountRepository } from '../../core/Repository/IDriveAccountRepo
 import DriveAccount from '../../core/Entities/driveAccount';
 import { AppDataSource } from '../data-source';
 import DriveAccountModel from '../models/driveAccount.model';
+
 dotenv.config();
 
 @injectable()
 export default class DriveAccountRepository implements IDriveAccountRepository {
-  private driveAccountRepository: Repository<DriveAccount>;
+  private driveAccountRepository: Repository<DriveAccountModel>;
 
   constructor() {
     this.driveAccountRepository =
@@ -18,16 +19,15 @@ export default class DriveAccountRepository implements IDriveAccountRepository {
   async createDriveAccount(driveAccount: DriveAccount): Promise<DriveAccount> {
     return await this.driveAccountRepository.save(driveAccount);
   }
-  async deleteDriveAccount(driveAccountID: string): Promise<void> {
-    await this.driveAccountRepository.delete(driveAccountID);
-  }
+
   async getDriveAccounts(): Promise<DriveAccount[]> {
     return await this.driveAccountRepository.find();
   }
   async getDriveAccountByID(driveAccountID: string): Promise<DriveAccount> {
-    const driveAccount = await this.driveAccountRepository.findOneBy({
-      id: driveAccountID,
-    });
+    const repository = AppDataSource.getMongoRepository(DriveAccountModel);
+
+    const driveAccount = await repository.findOneBy(driveAccountID);
+
     if (!driveAccount) throw new Error('drive Account doesnt exists');
     return driveAccount;
   }
@@ -35,10 +35,14 @@ export default class DriveAccountRepository implements IDriveAccountRepository {
     driveAccountID: string,
     driveAccount: DriveAccount
   ): Promise<void> {
-    const driveAccountToUpdate = await this.driveAccountRepository.findOneBy({
-      id: driveAccountID,
-    });
+    const repository = AppDataSource.getMongoRepository(DriveAccountModel);
+
+    const driveAccountToUpdate = await repository.findOneBy(driveAccountID);
     if (!driveAccountToUpdate) throw new Error('drive Account doesnt exists');
     await this.driveAccountRepository.update(driveAccountID, driveAccount);
+  }
+
+  async deleteDriveAccount(driveAccountID: string): Promise<void> {
+    await this.driveAccountRepository.delete(driveAccountID);
   }
 }

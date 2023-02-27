@@ -4,6 +4,8 @@ import dotenv from 'dotenv';
 import Routes from './core/API/routes';
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import { ErrorHandler } from './core/API/middlewares/errorHandler';
+import { receiveMessage } from './core/services/rabbitmq/receiver';
 
 
 dotenv.config();
@@ -19,6 +21,8 @@ app.use(
 app.use(cors());
 
 app.use(Routes);
+app.use(ErrorHandler.handle)
+receiveMessage();
 AppDataSource.initialize();
 
 app.listen(port, () => {

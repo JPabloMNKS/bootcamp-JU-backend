@@ -9,7 +9,7 @@ dotenv.config();
 
 @injectable()
 export default class FileUploaderRepository implements IFileUploaderRepository {
-  private fileUploaderRepository: Repository<FileUploader>;
+  private fileUploaderRepository: Repository<FileUploaderModel>;
 
   constructor() {
     this.fileUploaderRepository =
@@ -25,18 +25,16 @@ export default class FileUploaderRepository implements IFileUploaderRepository {
     return await this.fileUploaderRepository.find();
   }
   async getFileByID(fileID: string): Promise<FileUploader> {
-    
-    const file = await this.fileUploaderRepository.findOneBy({
-      id: fileID,
-    });
-    
+    const repository = AppDataSource.getMongoRepository(FileUploaderModel);
+    const file = await repository.findOneBy(fileID);
+
     if (!file) throw new Error('drive Account doesnt exists');
     return file;
   }
   async updateFile(fileID: string, fileUploader: FileUploader): Promise<void> {
-    const fileToUpdate = await this.fileUploaderRepository.findOneBy({
-      id: fileID,
-    });
+    const repository = AppDataSource.getMongoRepository(FileUploaderModel);
+
+    const fileToUpdate = await repository.findOneBy(fileID);
     if (!fileToUpdate) throw new Error('drive Account doesnt exists');
     await this.fileUploaderRepository.update(fileID, fileUploader);
   }

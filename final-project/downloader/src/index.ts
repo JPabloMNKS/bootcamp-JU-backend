@@ -5,6 +5,8 @@ import dotenv from 'dotenv';
 import userRoutes from './API/routes/routes';
 
 import { AppDataSource } from './DB/data-source'
+import { receiveFromRabbit } from './services/rabbitmq/receiver';
+import { ErrorHandler } from './API/middlewares/errorHandler';
 
 dotenv.config();
 const app = express();
@@ -18,12 +20,12 @@ app.use(
 );
 app.use(cors());
 app.use(userRoutes);
+app.use(ErrorHandler.handle)
+
+receiveFromRabbit();
 
 AppDataSource.initialize();
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
 
 app.listen(port, () => {
   console.log(`[server]: Server is running at https://localhost:${port}`);

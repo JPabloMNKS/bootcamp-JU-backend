@@ -1,19 +1,25 @@
-import { Entity, ObjectIdColumn, ObjectID, Column } from 'typeorm';
+import { Entity, ObjectIdColumn, Column } from 'typeorm';
 
-@Entity()
+@Entity('File')
 export default class FileUploaderModel {
-  @ObjectIdColumn()
-  id!: string;
+  @ObjectIdColumn({ name: '_id' })
+  id?: string;
 
   @Column()
-  name!: string;
+  filename: string;
 
   @Column()
-  size!: string;
+  originalName: string;
 
   @Column()
-  driveID!: string;
+  size: number;
 
   @Column()
-  status!: string;
+  mimetype: string;
+
+  @Column()
+  status: string;
+
+  @Column()
+  driveId?: string;
 }

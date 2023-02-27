@@ -8,9 +8,9 @@
     "moduleResolution": "node",
     "sourceMap": true,
     "outDir": "dist",
-    "lib": ["es2015"],
-    "strict": true,
-    "noImplicitAny": true,
-    "skipLibCheck": true
+    "lib": ["es2016"],
+    // "strict": true,
+    // "noImplicitAny": true,
+    // "skipLibCheck": true
   }
 }

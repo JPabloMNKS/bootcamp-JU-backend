@@ -1,13 +1,22 @@
 import { Entity, ObjectIdColumn, Column } from 'typeorm';
 
-@Entity()
+@Entity('DriveAccount')
 export default class DriveAccountModel {
   @ObjectIdColumn()
-  id!: string;
+  id?: string;
 
   @Column()
-  email!: string;
+  email: string;
 
   @Column()
-  googleDriveKey!: string;
+  client_id: string;
+
+  @Column()
+  client_secret: string;
+
+  @Column()
+  redirect_uri: string;
+
+  @Column()
+  refresh_token: string;
 }
