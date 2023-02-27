@@ -5,23 +5,13 @@ async function receiveMessage() {
   const connection = await amqp.connect('amqp://localhost');
   const channel = await connection.createChannel();
 
-  const queueUploader = 'Uploader-Stats';
   const queueDownloader = 'Downloader-Stats';
   const queueDownloaderFile = 'Downloader-Stats-File';
   const queueDownloaderAccount = 'Downloader-Stats-Account';
 
-  await channel.assertQueue(queueUploader, { durable: false });
   await channel.assertQueue(queueDownloader, { durable: false });
   await channel.assertQueue(queueDownloaderFile, { durable: false });
   await channel.assertQueue(queueDownloaderAccount, { durable: false });
-
-  channel.consume(
-    queueUploader,
-    (message) => {
-      const receivedMessage = JSON.parse(message!.content.toString());
-    },
-    { noAck: true }
-  );
 
   channel.consume(
     queueDownloader,

@@ -5,6 +5,9 @@ import AccountInfoService from '../base/accountInfoService';
 import FileDownloadService from '../base/fileDownloaderService';
 import ReportService from '../base/reportService';
 import AccountInfoModel from '../../DB/models/accountInfo.model';
+import { Point, WriteApi } from '@influxdata/influxdb-client';
+import AccountInfo from '../../entity/accountInfo';
+import InfluxDbService from '../../../../uploader/src/core/services/base/influxDBService';
 
 export async function receiveFromRabbit() {
   const connection = await amqp.connect('amqp://localhost');
@@ -78,8 +81,28 @@ export async function receiveFromRabbit() {
   channel.consume(
     queueStatsAccount,
     async (message) => {
-      const accountReport = JSON.parse(message!.content.toString());
+      const accountReport: AccountInfo = JSON.parse(
+        message!.content.toString()
+      );
       const driveAccountService = new AccountInfoService();
+
+      const point = new Point('accounts')
+        .tag('account ID', accountReport.accountId)
+        .floatField('Downloads today', accountReport.downloadsToday)
+        .floatField('Downloads total', accountReport.downloadsTotal)
+        .floatField(
+          'Accumulated file size today',
+          accountReport.accumulatedSizeDay
+        )
+        .floatField(
+          'Accumulated file size total',
+          accountReport.accumulatedSizeTotal
+        )
+        .timestamp(new Date());
+
+      const influxDBService = new InfluxDbService();
+      influxDBService.writeApi.writePoints([point]);
+
       await driveAccountService.updateOrCreateAccountByAccountId(accountReport);
     },
     { noAck: true }
@@ -90,6 +113,23 @@ export async function receiveFromRabbit() {
     async (message) => {
       const fileReport = JSON.parse(message!.content.toString());
       const fileReportService = new ReportService();
+
+      const point = new Point('File Reports')
+        .tag('Report file ID', fileReport.uploaderId)
+        .floatField('Downloads today', fileReport.downloadsToday)
+        .floatField('Downloads total', fileReport.downloadsTotal)
+        .floatField(
+          'Accumulated file size today',
+          fileReport.accumulatedSizeDay
+        )
+        .floatField(
+          'Accumulated file size total',
+          fileReport.accumulatedSizeTotal
+        )
+        .timestamp(new Date());
+
+      const influxDBService = new InfluxDbService();
+      influxDBService.writeApi.writePoints([point]);
 
       if (fileReport.id) {
         await fileReportService.updateFileReport(fileReport);

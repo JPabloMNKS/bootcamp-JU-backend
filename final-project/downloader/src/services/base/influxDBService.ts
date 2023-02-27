@@ -9,7 +9,7 @@ const bucket = 'bucketAdmin';
 
 export default class InfluxDbService {
   private influxDB: InfluxDB;
-  private writeApi: WriteApi;
+  public writeApi: WriteApi;
 
   private url: string;
   private token: string;
